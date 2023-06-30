@@ -4,6 +4,8 @@ from rouge_score import rouge_scorer, tokenize
 class DataUtils:
     @staticmethod
     def split_segments(statement: str):
+        # 该函数的输入是一个字符串 statement，它表示待处理的文本语句。函数将文本进行分割和解析，返回一个包含所有段落的列表和相应的引用列表。
+        # 具体来说，函数首先去除多余的空格和换行符，并使用正则表达式 split_pattern 对语句进行分割。然后，根据语句中的引用标记（以方括号表示），将语句划分为段落和引用列表的组合。接下来，将每个段落进一步分割成较短的句子，同时将引用列表添加到相应的段落中。最后，函数返回经过处理的段落列表和引用列表。
         all_statements = []
         statement = re.sub(' +', ' ', statement.replace('\n', ' '))
         split_pattern = r'(?<!\w\.\w.)(?<![A-Z]\.)(?<![A-Z][a-z]\.)(?<! [a-z]\.)(?<![A-Z][a-z][a-z]\.)(?<=\.|\?|\!)\"*\s*\s*(?:\W*)([A-Z])'
