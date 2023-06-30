@@ -46,6 +46,15 @@ class DataUtils:
     
     @staticmethod
     def matching_score(all_statements, references):
+        # 该函数的输入是两个列表 all_statements 和 references，分别表示所有段落和相应的引用。
+        # 该函数首先定义了一个内部函数 remove_stopwords，用于去除段落和引用中的停用词。
+        # 然后，函数通过遍历所有段落和引用，并调用 remove_stopwords 函数来去除停用词。
+        # 接下来，函数创建了一个 RougeScorer 对象，只计算 Rouge-1 分数。然后，函数开始计算段落与引用之间的匹配得分。
+        # 对于每个段落，如果单词数少于5个，则将其与所有引用之间的得分都设为0。
+        # 否则，函数使用 Rouge-1 精确度计算当前段落与每个引用之间的得分，并将它们添加到 all_scores 列表中。
+        # 最后，函数返回包含所有段落与引用之间得分的二维列表 all_scores。
+        # 请注意，该函数依赖于一些其他模块（例如 tokenize 和 rouge_scorer），在使用之前需要先导入这些模块。
+        # 另外，函数中涉及的停用词处理和 Rouge-1 得分计算可能需要额外的资源或库支持。
         def remove_stopwords(stmt: str):
             stmt = tokenize.tokenize(stmt, None)
             ret = []
@@ -75,7 +84,10 @@ class DataUtils:
     
     @staticmethod
     def get_ideal_citations(all_scores, raw_citations, citation_threshold, extra_bonus=0.3):
-        
+        # 该静态方法的输入包括三个列表 all_scores、raw_citations 和一个引用阈值 citation_threshold，以及一个额外奖励分数 extra_bonus（默认为0.3）。方法首先使用断言来确保得分列表和原始引用列表的长度相等。
+        # 然后，方法遍历所有段落的得分列表，并根据得分和一些条件进行判断。对于每个得分，如果其对应的引用在原始引用列表中，则给它增加额外的奖励分数。然后，如果得分超过引用阈值，则将其添加到理想引用列表中。同时，方法会记录最佳得分和对应的引用索引。
+        # 在遍历完所有得分之后，如果理想引用列表为空且原始引用列表不为空，则将最佳引用作为理想引用。最后，方法返回包含所有段落的理想引用列表 ideal_citations。
+        # 请注意，该方法是一个静态方法，可以通过类名直接调用，而无需创建类的实例。
         assert len(all_scores) == len(raw_citations)
         
         ideal_citations = []
